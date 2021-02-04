@@ -20,6 +20,8 @@ def calc_durations(data, **kwargs):
             entry['join'] = start
         if entry['join'] + entry['duration'] > end:
             entry['duration'] = end - entry['join']
+        if (entry['duration'] < 0):
+            entry['duration'] = 0
         durations[entry['name']] += entry['duration']
     return durations
 
@@ -31,10 +33,14 @@ def make_report(durations):
         status = 'L' if (x - xbar) / s < -1.0 else 'P'
         yield (status,e,z)
 
-def main(prof, filename):
+def main(prof, filename, offset=None, duration=None):
     data = read_file(filename)
     start = min(e['join'] for e in data['attendees'] if e['email'] == prof)
     end = max(e['join'] + e['duration'] for e in data['attendees'] if e['email'] == prof)
+    if offset:
+        start += 60*int(offset)
+    if duration:
+        end = start + 60 * int(duration)
     durations = calc_durations(data, prof=prof, start=start, end=end)
     zscores = sorted(x for x in make_report(durations))
     for status,uid,score in zscores:

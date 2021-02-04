@@ -34,13 +34,16 @@ When you have processed a search query for meetings and you are presented with t
 #### Usage
 
 ```bash
-python3 parse.py <host_email> <json_file>
+python3 parse.py <host_email> <json_file> [start_offset] [duration]
 # or
-./parse.py <host_email> <json_file>
+./parse.py <host_email> <json_file> [start_offset] [duration]
 
 ### EXAMPLE
 ./parse.py william.killian@millersville.edu 330.50-01-26.json
 ```
+
+- `start_offset` how many minutes to offset when lecture started (for example, if the faculty joined 5 minutes before the start of class and wanted to give three minutes to students to get settled in, the offset would be `8`)
+- `duration` override how long you want to cap attendance for (in minutes). Useful with the start offset to bind attendance to the scheduled class time.
 
 #### Process
 
